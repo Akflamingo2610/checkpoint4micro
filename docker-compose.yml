@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Banco de dados MySQL
+  database:
+    image: mysql:8.0
+    container_name: checkpoint4micro-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: checkpoint4micro
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - checkpoint4micro-network
+
+  # Aplicação Spring Boot
+  api:
+    build: .
+    container_name: checkpoint4micro-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/checkpoint4micro
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: apppassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+    depends_on:
+      - database
+    networks:
+      - checkpoint4micro-network
+
+volumes:
+  mysql_data:
+
+networks:
+  checkpoint4micro-network:
+    driver: bridge
+
