@@ -28,7 +28,7 @@ jobs:
         images: ${{ secrets.DOCKER_USERNAME }}/checkpoint4micro
         tags: |
           type=ref,event=pr
-          type=sha,prefix={{branch}}-
+          type=sha,prefix=pr-
           
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
