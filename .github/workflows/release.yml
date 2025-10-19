@@ -1,0 +1,85 @@
+name: Release and Documentation
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Build application
+      run: ./mvnw clean package -DskipTests
+      
+    - name: Generate Javadoc
+      run: ./mvnw javadoc:javadoc
+      
+    - name: Generate API Documentation
+      run: |
+        # Criar documentação da API baseada no Swagger
+        mkdir -p docs/api
+        echo "# API Documentation" > docs/api/README.md
+        echo "" >> docs/api/README.md
+        echo "## Swagger UI" >> docs/api/README.md
+        echo "Acesse a documentação interativa da API em: http://localhost:8080/swagger-ui.html" >> docs/api/README.md
+        echo "" >> docs/api/README.md
+        echo "## Endpoints Disponíveis" >> docs/api/README.md
+        echo "- GET /api/produtos - Lista todos os produtos" >> docs/api/README.md
+        echo "- POST /api/produtos - Cria um novo produto" >> docs/api/README.md
+        echo "- GET /api/produtos/{id} - Busca produto por ID" >> docs/api/README.md
+        echo "- PUT /api/produtos/{id} - Atualiza produto por ID" >> docs/api/README.md
+        echo "- DELETE /api/produtos/{id} - Remove produto por ID" >> docs/api/README.md
+        
+    - name: Create Release Notes
+      run: |
+        # Gerar notas de release baseadas nos commits
+        echo "# Release Notes" > RELEASE_NOTES.md
+        echo "" >> RELEASE_NOTES.md
+        echo "## Versão $(date +%Y.%m.%d)" >> RELEASE_NOTES.md
+        echo "" >> RELEASE_NOTES.md
+        echo "### Mudanças:" >> RELEASE_NOTES.md
+        git log --oneline --since="1 week ago" >> RELEASE_NOTES.md
+        echo "" >> RELEASE_NOTES.md
+        echo "### Documentação:" >> RELEASE_NOTES.md
+        echo "- API Documentation: docs/api/README.md" >> RELEASE_NOTES.md
+        echo "- Javadoc: target/site/apidocs/" >> RELEASE_NOTES.md
+        
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        body_path: RELEASE_NOTES.md
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/checkpoint4micro-0.0.1-SNAPSHOT.jar
+        asset_name: checkpoint4micro-${{ github.run_number }}.jar
+        asset_content_type: application/java-archive

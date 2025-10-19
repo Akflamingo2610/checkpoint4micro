@@ -25,7 +25,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copiar o JAR compilado do estágio anterior
-COPY --from=build /app/target/checkpoint4micro-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 # Expor a porta 8080
 EXPOSE 8080

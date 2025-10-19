@@ -1,4 +1,4 @@
-INFORMAÇÕES PARA ENTREGA - CHECK POINT 1
+INFORMAÇÕES PARA ENTREGA - CHECKPOINT 4
 
 URL do repositório GitHub:
 https://github.com/Akflamingo2610/checkpoint4micro
@@ -7,14 +7,6 @@ URL do repositório Docker Hub:
 https://hub.docker.com/r/akflamingo2610/checkpoint4micro
 
 Nomes dos membros do grupo:
-[Nome do Membro 1]
-[Nome do Membro 2]
-[Nome do Membro 3]
-
-OBSERVAÇÕES:
-- Substitua "SEU_USUARIO" pelo seu nome de usuário real do GitHub e Docker Hub
-- Adicione os nomes reais dos membros do grupo
-- Certifique-se de que o repositório no GitHub e no Docker Hub tenham o mesmo nome
-- Faça o upload deste arquivo no Portal do Aluno / Área de Entrega de Trabalhos
-
+Lucas Thomazette benvenuto rm 98048
+Pedro Loterio dos Santos rm 550909
 

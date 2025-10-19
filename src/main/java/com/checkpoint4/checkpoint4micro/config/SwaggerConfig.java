@@ -15,7 +15,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Checkpoint4Micro API")
                         .description("API REST para gerenciamento de produtos - Check Point 1")
-                        .version("1.0.0")
+                        .version("1.0.1")
                         .license(new License()
                                 .name("MIT")
                                 .url("https://opensource.org/licenses/MIT")));
