@@ -1,8 +1,8 @@
-name: Continuous Delivery
+name: Continuous Delivery - Docker Hub Upload
 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches: [ develop, main ]
 
 jobs:
   build-and-push:
@@ -27,8 +27,9 @@ jobs:
       with:
         images: ${{ secrets.DOCKER_USERNAME }}/checkpoint4micro
         tags: |
-          type=ref,event=pr
+          type=ref,event=branch
           type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
           
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
