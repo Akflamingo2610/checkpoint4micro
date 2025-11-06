@@ -1,5 +1,5 @@
 # Multi-stage build: primeiro estágio para compilar
-FROM openjdk:21-jdk-slim AS build
+FROM eclipse-temurin:21-jdk AS build
 
 # Definir diretório de trabalho
 WORKDIR /app
@@ -22,7 +22,7 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Segundo estágio: imagem final apenas com o JAR
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 
 # Definir diretório de trabalho
 WORKDIR /app
