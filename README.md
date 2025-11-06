@@ -92,4 +92,3 @@ docker-compose up -d
 ### Membros do Grupo:
 - Lucas Thomazette Benvenuto - RM 98048
 - Pedro Loterio dos Santos - RM 550909
-- Cesar Iglesias rm 98007
